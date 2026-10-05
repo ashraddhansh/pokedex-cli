@@ -1,14 +1,14 @@
 package main
 
 import (
-	"strings"
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 
-func startRepl() {
+func startRepl(cfg config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -16,10 +16,10 @@ func startRepl() {
 		userInput := scanner.Text()
 		commandName := cleanInput(userInput)[0]
 
-		command, exists := getCommands()[commandName]
+		command, exists := cfg.registry[commandName]
 		
 		if exists {
-			err := command.callback()
+			err := command.callback(cfg)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -41,20 +41,11 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(config) error
 }
 
-func getCommands() map[string]cliCommand {
-	return map[string]cliCommand{
-		"help": {
-			name:        "help",
-			description: "Displays a help message",
-			callback:    commandHelp,
-		},
-		"exit": {
-			name:        "exit",
-			description: "Exit the Pokedex",
-			callback:    commandExit,
-		},
-	}
+
+type config struct {
+	registry map[string]cliCommand
+
 }
