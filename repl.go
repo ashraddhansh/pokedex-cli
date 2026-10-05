@@ -47,5 +47,6 @@ type cliCommand struct {
 
 type config struct {
 	registry map[string]cliCommand
+	url map[string]string
 
 }
