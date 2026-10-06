@@ -4,13 +4,13 @@ import (
 	"time"
 )
 
-func NewCache(interval time.Duration) *Cache {
+func NewCache(interval time.Duration) Cache {
 	c := &Cache{
 		entry : make(map[string]cacheEntry),
 		interval : interval,
 	}
 	go c.reapLoop()
-	return c
+	return *c
 }
 
 func (c *Cache) Add(key string, val []byte) {
