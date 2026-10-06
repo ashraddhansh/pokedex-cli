@@ -1,49 +1,43 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"github.com/ashraddhansh/pokedexcli/internal/pokeapi"
 )
 
 
-func commandMap(cfg config) error {
-
-	res, err := pokeapi.ListLocations(cfg.url["next"])
-
+func commandMapf(cfg *config) error {
+	locationsResp, err := cfg.pokeapiClient.ListLocations(cfg.nextLocationsURL)
 	if err != nil {
 		return err
 	}
 
-	cfg.url["next"] = res.Next
-	cfg.url["previous"] = res.Previous
+	cfg.nextLocationsURL = locationsResp.Next
+	cfg.prevLocationsURL = locationsResp.Previous
 
-	for _, result := range res.Results{
-		fmt.Println(result.Name)
+	for _, loc := range locationsResp.Results {
+		fmt.Println(loc.Name)
 	}
-
 	return nil
 }
 
 
-func commandMapB(cfg config) error {
-	exists := cfg.url["previous"]
-	if exists == "" {
-		fmt.Println("you're on the first page")
-		return nil
+func commandMapb(cfg *config) error {
+	if cfg.prevLocationsURL == nil {
+		return errors.New("you're on the first page")
 	}
 
-	res, err := pokeapi.ListLocations(cfg.url["previous"])
-
+	locationResp, err := cfg.pokeapiClient.ListLocations(cfg.prevLocationsURL)
 	if err != nil {
 		return err
 	}
 
-	cfg.url["next"] = res.Next
-	cfg.url["previous"] = res.Previous
+	cfg.nextLocationsURL = locationResp.Next
+	cfg.prevLocationsURL = locationResp.Previous
 
-	for _, result := range res.Results{
-		fmt.Println(result.Name)
+	for _, loc := range locationResp.Results {
+		fmt.Println(loc.Name)
 	}
-
 	return nil
 }
+
