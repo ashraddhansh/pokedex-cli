@@ -25,7 +25,7 @@ var Config = config{
 	},
 	url: map[string]string{
 		"next" : "https://pokeapi.co/api/v2/location-area/",
-		"previous" : "null",
+		"previous" : "",
 	},
 }
 
