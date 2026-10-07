@@ -21,6 +21,7 @@ func commandCatch(cfg *config, name *string) error {
 	}
 	if iscaught(pokeResp.BaseExperience) {
 		fmt.Println(pokeResp.Name, "was caught!")
+		cfg.caught[pokeResp.Name] = pokeResp
 	} else {
 		fmt.Println(pokeResp.Name, "escaped!")
 	}
