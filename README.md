@@ -4,7 +4,7 @@ A small command-line Pokedex I made while learning about HTTP in Go. It uses the
 
 ## Run
 
-You need Go 1.27.1 or newer and an internet connection to make requests to the API.
+You need Go 1.20 or newer and an internet connection to make requests to the API.
 
 ```sh
 go run .
